@@ -1,0 +1,635 @@
+-- ==========================================================
+-- ODM ERD v2.2.3 (from your ERD PDF) – PostgreSQL DDL
+-- No mandatory fields; exact column names & order as in ERD
+-- ==========================================================
+
+-- ----------------------------------------------------------
+-- DICTIONARY LOOK-UP TABLES
+-- ----------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS "languages" (
+  "lang"         VARCHAR PRIMARY KEY,
+  "langFam"      VARCHAR,
+  "langName"     VARCHAR,
+  "natName"      VARCHAR,
+  "ISO6391"      VARCHAR,
+  "ISO6392T"     VARCHAR,
+  "firstReleased" TIMESTAMP,
+  "lastUpdated"  TIMESTAMP,
+  "changes"      VARCHAR,
+  "notes"        VARCHAR
+);
+
+CREATE TABLE IF NOT EXISTS "countries" (
+  "isoCode"        VARCHAR PRIMARY KEY,
+  "isoCodeX"       VARCHAR,
+  "numCode"        VARCHAR,
+  "tld"            VARCHAR,
+  "nameEngl"       VARCHAR,
+  "nameOfficial"   VARCHAR,
+  "sovereignty"   VARCHAR,
+  "countryExonym"  VARCHAR,
+  "capitalExonym"  VARCHAR,
+  "countryEndonym" VARCHAR,
+  "capitalEndonym" VARCHAR,
+  "langScript"     VARCHAR,
+  "phone"          VARCHAR,
+  "utc"            VARCHAR,
+  "utcDST"         VARCHAR
+);
+
+CREATE TABLE IF NOT EXISTS "zones" (
+  "isoCode"  VARCHAR,
+  "isoZone"  VARCHAR PRIMARY KEY,
+  "zoneName" VARCHAR
+);
+
+CREATE TABLE IF NOT EXISTS "wideNames" (
+  "wideName"         VARCHAR PRIMARY KEY,
+  "label"            VARCHAR,
+  "charLength"       INTEGER,
+  "descr"            VARCHAR,
+  "source"           VARCHAR,
+  "wideMeasure"      VARCHAR,
+  "wideProtocol"     VARCHAR,
+  "wideAttribute"    VARCHAR,
+  "wideNameType"     VARCHAR, -- FK -> parts.partID
+  "reportTableName"  VARCHAR,
+  "reportTableInput" VARCHAR, -- FK -> parts.partID
+  "partTypeName"     VARCHAR,
+  "partTypeInput"    VARCHAR, -- FK -> parts.partID
+  "compartmentName"  VARCHAR,
+  "compartmentInput" VARCHAR, -- FK -> parts.partID
+  "specimenName"     VARCHAR,
+  "specimenInput"    VARCHAR, -- FK -> parts.partID
+  "fractionName"     VARCHAR,
+  "fractionInput"    VARCHAR, -- FK -> parts.partID
+  "measureName"      VARCHAR,
+  "measureInput"     VARCHAR, -- FK -> parts.partID
+  "methodName"       VARCHAR,
+  "methodInput"      VARCHAR, -- FK -> parts.partID
+  "unitName"         VARCHAR,
+  "unitInput"        VARCHAR, -- FK -> parts.partID
+  "aggregationName"  VARCHAR,
+  "aggregationInput" VARCHAR, -- FK -> parts.partID
+  "index"            INTEGER,
+  "attributeName"    VARCHAR,
+  "attributeInput"   VARCHAR  -- FK -> parts.partID
+);
+
+CREATE TABLE IF NOT EXISTS "parts" (
+  "partID"                         VARCHAR PRIMARY KEY,
+  "label"                          VARCHAR,
+  "partType"                       VARCHAR, -- FK -> parts.partID
+  "partDesc"                       VARCHAR,
+  "partInstr"                      VARCHAR,
+  "domain"                         VARCHAR, -- FK -> parts.partID
+  "specimenSet"                    VARCHAR, -- FK field but target table not present in ERD
+  "compartmentSet"                 VARCHAR, -- (kept free-text)
+  "group"                          VARCHAR, -- FK -> parts.partID
+  "class"                          VARCHAR, -- FK -> parts.partID
+  "nomenclature"                   VARCHAR, -- FK -> parts.partID
+  "ontologyRef"                    VARCHAR,
+  "latExp"                         VARCHAR,
+  "mmaSet"                         VARCHAR, -- FK field (no sets table in ERD)
+  "unitSet"                        VARCHAR, -- FK field (no sets table in ERD)
+  "aggregationScale"               VARCHAR, -- FK -> parts.partID
+  "aggregationSet"                 VARCHAR, -- FK field (no sets table in ERD)
+  "qualityIndSet"                  VARCHAR, -- FK field (no sets table in ERD)
+  "missingnessSet"                 VARCHAR, -- FK field (no sets table in ERD)
+  "status"                         VARCHAR, -- FK -> parts.partID
+  "firstReleased"                  VARCHAR,
+  "lastUpdated"                    VARCHAR,
+  "changes"                        VARCHAR,
+  "protocolSteps"                  VARCHAR,
+  "protocolStepsRequired"          VARCHAR,
+  "protocolStepsOrder"             INTEGER,
+  "protocolRelationships"          VARCHAR,
+  "protocolRelationshipsRequired"  VARCHAR,
+  "protocolRelationshipsOrder"     INTEGER,
+  "measures"                       VARCHAR,
+  "measuresRequired"               VARCHAR,
+  "measuresOrder"                  INTEGER,
+  "measureSetsRequired"            VARCHAR,
+  "measureSetsOrder"               INTEGER,
+  "datasets"                       VARCHAR,
+  "datasetsRequired"               VARCHAR,
+  "datasetsOrder"                  INTEGER,
+  "sites"                          VARCHAR,
+  "sitesRequired"                  VARCHAR,
+  "sitesOrder"                     INTEGER,
+  "samples"                        VARCHAR,
+  "samplesRequired"                VARCHAR,
+  "samplesOrder"                   INTEGER,
+  "addresses"                      VARCHAR,
+  "addressesRequired"              VARCHAR,
+  "addressesOrder"                 INTEGER,
+  "contacts"                       VARCHAR,
+  "contactsRequired"               VARCHAR,
+  "contactsOrder"                  INTEGER,
+  "organizations"                  VARCHAR,
+  "organizationsRequired"          VARCHAR,
+  "organizationsOrder"             INTEGER,
+  "instruments"                    VARCHAR,
+  "instrumentsRequired"            VARCHAR,
+  "instrumentsOrder"               INTEGER,
+  "polygons"                       VARCHAR,
+  "polygonsRequired"               VARCHAR,
+  "polygonsOrder"                  INTEGER,
+  "languages"                      VARCHAR,
+  "languagesRequired"              VARCHAR,
+  "languagesOrder"                 INTEGER,
+  "translations"                   VARCHAR,
+  "translationsRequired"           VARCHAR,
+  "translationsOrder"              INTEGER,
+  "parts"                          VARCHAR,
+  "partsRequired"                  VARCHAR,
+  "partsOrder"                     INTEGER,
+  "sets"                           VARCHAR,
+  "setsRequired"                   VARCHAR,
+  "setsOrder"                      INTEGER,
+  "qualityReports"                 VARCHAR,
+  "qualityReportsRequired"         VARCHAR,
+  "qualityReportsOrder"            INTEGER,
+  "sampleRelationships"            VARCHAR,
+  "sampleRelationshipsRequired"    VARCHAR,
+  "sampleRelationshipsOrder"       INTEGER,
+  "protocols"                      VARCHAR,
+  "protocolsRequired"              VARCHAR,
+  "protocolsOrder"                 INTEGER,
+  "countries"                      VARCHAR,
+  "countriesRequired"              VARCHAR,
+  "countriesOrder"                 INTEGER,
+  "zones"                          VARCHAR,
+  "zonesRequired"                  VARCHAR,
+  "zonesOrder"                     INTEGER,
+  "refLink"                        VARCHAR,
+  "dataTypes"                      VARCHAR, -- FK -> parts.partID
+  "minValue"                       INTEGER,
+  "maxValue"                       INTEGER,
+  "minLength"                      INTEGER,
+  "maxLength"                      INTEGER
+);
+
+CREATE TABLE IF NOT EXISTS "translations" (
+  "translationID" INTEGER PRIMARY KEY,
+  "lang"          VARCHAR, -- FK -> languages.lang
+  "partID"        VARCHAR, -- FK -> parts.partID
+  "label"         VARCHAR,
+  "partDesc"      VARCHAR,
+  "partInstr"     VARCHAR,
+  "firstReleased" TIMESTAMP,
+  "lastUpdated"   TIMESTAMP,
+  "changes"       VARCHAR,
+  "notes"         VARCHAR
+);
+
+-- ----------------------------------------------------------
+-- PROGRAM DESCRIPTION TABLES
+-- ----------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS "datasets" (
+  "parDatasetID" VARCHAR,
+  "datasetID"    VARCHAR PRIMARY KEY,
+  "datasetDate"  TIMESTAMP,
+  "name"         VARCHAR,
+  "license"      VARCHAR, -- FK -> parts.partID
+  "descr"        VARCHAR,
+  "refLink"      VARCHAR,
+  "lang"         VARCHAR, -- FK -> languages.lang
+  "funderCont"   VARCHAR, -- FK -> contacts.contactID
+  "custodyCont"  VARCHAR, -- FK -> contacts.contactID
+  "funderID"     VARCHAR, -- FK -> organizations.organizationID
+  "custodyID"    VARCHAR, -- FK -> organizations.organizationID
+  "lastEdited"   TIMESTAMP,
+  "notes"        VARCHAR
+);
+
+CREATE TABLE IF NOT EXISTS "addresses" (
+  "addressID"    VARCHAR PRIMARY KEY,
+  "datasetID"    VARCHAR, -- FK -> datasets.datasetID
+  "addL1"        VARCHAR,
+  "addL2"        VARCHAR,
+  "city"         VARCHAR,
+  "stateProvReg" VARCHAR, -- FK -> zones.isoZone
+  "pCode"        VARCHAR,
+  "country"      VARCHAR, -- FK -> countries.isoCode
+  "lastEdited"   TIMESTAMP,
+  "notes"        VARCHAR
+);
+
+CREATE TABLE IF NOT EXISTS "organizations" (
+  "organizationID" VARCHAR PRIMARY KEY,
+  "name"           VARCHAR,
+  "descr"          VARCHAR,
+  "addressID"      VARCHAR, -- FK -> addresses.addressID
+  "datasetID"      VARCHAR, -- FK -> datasets.datasetID
+  "orgType"        VARCHAR, -- FK -> parts.partID
+  "orgLevel"       VARCHAR, -- FK -> parts.partID
+  "orgSector"      VARCHAR, -- FK -> parts.partID
+  "lastEdited"     TIMESTAMP,
+  "notes"          VARCHAR
+);
+
+CREATE TABLE IF NOT EXISTS "contacts" (
+  "contactID"      VARCHAR PRIMARY KEY,
+  "datasetID"      VARCHAR, -- FK -> datasets.datasetID
+  "organizationID" VARCHAR, -- FK -> organizations.organizationID
+  "firstName"      VARCHAR,
+  "lastName"       VARCHAR,
+  "email"          VARCHAR,
+  "phone"          VARCHAR,
+  "role"           VARCHAR,
+  "lastEdited"     TIMESTAMP,
+  "notes"          VARCHAR
+);
+
+CREATE TABLE IF NOT EXISTS "polygons" (
+  "polygonID"      VARCHAR PRIMARY KEY,
+  "datasetID"      VARCHAR, -- FK -> datasets.datasetID
+  "name"           VARCHAR,
+  "descr"          VARCHAR,
+  "polyPop"        INTEGER,
+  "geoType"        VARCHAR,
+  "geoEPSG"        VARCHAR,
+  "geoWKT"         VARCHAR,
+  "fileLocation"   VARCHAR,
+  "refLink"        VARCHAR,
+  "organizationID" VARCHAR, -- FK -> organizations.organizationID
+  "contactID"      VARCHAR, -- FK -> contacts.contactID
+  "lastEdited"     TIMESTAMP,
+  "notes"          VARCHAR
+);
+
+CREATE TABLE IF NOT EXISTS "instruments" (
+  "instrumentID"   VARCHAR PRIMARY KEY,
+  "datasetID"      VARCHAR, -- FK -> datasets.datasetID
+  "name"           VARCHAR,
+  "model"          VARCHAR,
+  "manufacturer"   VARCHAR,
+  "contactID"      VARCHAR, -- FK -> contacts.contactID
+  "organizationID" VARCHAR, -- FK -> organizations.organizationID
+  "descr"          VARCHAR,
+  "refLink"        VARCHAR,
+  "insType"        VARCHAR, -- FK -> parts.partID
+  "insTypeOth"     VARCHAR,
+  "index"          INTEGER,
+  "lastEdited"     TIMESTAMP,
+  "notes"          VARCHAR
+);
+
+CREATE TABLE IF NOT EXISTS "protocols" (
+  "sourceProtocol"  VARCHAR, -- FK -> protocols.protocolID (self)
+  "protocolID"      VARCHAR PRIMARY KEY,
+  "datasetID"       VARCHAR, -- FK -> datasets.datasetID
+  "name"            VARCHAR,
+  "summ"            VARCHAR,
+  "refLink"         VARCHAR,
+  "organizationID"  VARCHAR, -- FK -> organizations.organizationID
+  "contactID"       VARCHAR, -- FK -> contacts.contactID
+  "protocolVersion" VARCHAR,
+  "lastEdited"      TIMESTAMP,
+  "notes"           VARCHAR
+);
+
+CREATE TABLE IF NOT EXISTS "protocolSteps" (
+  "stepID"         VARCHAR PRIMARY KEY,
+  "method"         VARCHAR, -- FK -> parts.partID
+  "measure"        VARCHAR, -- FK -> parts.partID
+  "summ"           VARCHAR,
+  "sourceStep"     VARCHAR, -- FK -> protocolSteps.stepID (self)
+  "stepVer"        VARCHAR,
+  "refLink"        VARCHAR,
+  "organizationID" VARCHAR, -- FK -> organizations.organizationID
+  "contactID"      VARCHAR, -- FK -> contacts.contactID
+  "instrumentID"   VARCHAR, -- FK -> instruments.instrumentID
+  "value"          VARCHAR,
+  "unit"           VARCHAR, -- FK -> parts.partID
+  "aggregation"    VARCHAR, -- FK -> parts.partID
+  "lastEdited"     TIMESTAMP,
+  "notes"          VARCHAR
+);
+
+CREATE TABLE IF NOT EXISTS "measureSets" (
+  "measureSetRepID" VARCHAR PRIMARY KEY,
+  "protocolID"      VARCHAR, -- FK -> protocols.protocolID
+  "name"            VARCHAR,
+  "organizationID"  VARCHAR, -- FK -> organizations.organizationID
+  "contactID"       VARCHAR, -- FK -> contacts.contactID
+  "lastEdited"      TIMESTAMP,
+  "notes"           VARCHAR
+);
+
+CREATE TABLE IF NOT EXISTS "sites" (
+  "parSiteID"      VARCHAR, -- FK -> sites.siteID (self)
+  "siteID"         VARCHAR PRIMARY KEY,
+  "datasetID"      VARCHAR, -- FK -> datasets.datasetID
+  "polygonID"      VARCHAR, -- FK -> polygons.polygonID
+  "siteType"       VARCHAR, -- FK -> parts.partID
+  "sampleShed"     VARCHAR, -- FK -> parts.partID
+  "addressID"      VARCHAR, -- FK -> addresses.addressID
+  "organizationID" VARCHAR, -- FK -> organizations.organizationID
+  "contactID"      VARCHAR, -- FK -> contacts.contactID
+  "name"           VARCHAR,
+  "descr"          VARCHAR,
+  "repOrg1"        VARCHAR, -- FK -> organizations.organizationID
+  "repOrg2"        VARCHAR, -- FK -> organizations.organizationID
+  "healthRegion"   VARCHAR,
+  "popServ"        INTEGER,
+  "geoLat"         VARCHAR,
+  "geoLong"        VARCHAR,
+  "geoEPSG"        VARCHAR,
+  "lastEdited"     TIMESTAMP,
+  "notes"          VARCHAR
+);
+
+-- ----------------------------------------------------------
+-- RESULTS TABLES
+-- ----------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS "samples" (
+  "sampleID"       VARCHAR PRIMARY KEY,
+  "protocolID"     VARCHAR, -- FK -> protocols.protocolID
+  "organizationID" VARCHAR, -- FK -> organizations.organizationID
+  "contactID"      VARCHAR, -- FK -> contacts.contactID
+  "siteID"         VARCHAR, -- FK -> sites.siteID
+  "purposeID"      VARCHAR, -- FK -> parts.partID
+  "saMaterial"     VARCHAR, -- FK -> parts.partID
+  "datasetID"      VARCHAR, -- FK -> datasets.datasetID
+  "origin"         VARCHAR, -- FK -> parts.partID
+  "repType"        VARCHAR, -- FK -> parts.partID
+  "collType"       VARCHAR, -- FK -> parts.partID
+  "collPer"        DOUBLE PRECISION,
+  "collNum"        INTEGER,
+  "pooled"         VARCHAR, -- FK -> parts.partID
+  "collDT"         TIMESTAMP,
+  "collDTStart"    TIMESTAMP,
+  "collDTEnd"      TIMESTAMP,
+  "sentDate"       TIMESTAMP,
+  "recDate"        TIMESTAMP,
+  "reportable"     VARCHAR, -- FK -> parts.partID
+  "lastEdited"     TIMESTAMP,
+  "notes"          VARCHAR
+);
+
+CREATE TABLE IF NOT EXISTS "measures" (
+  "measureRepID"    VARCHAR PRIMARY KEY,
+  "protocolID"      VARCHAR, -- FK -> protocols.protocolID
+  "sampleID"        VARCHAR, -- FK -> samples.sampleID
+  "purposeID"       VARCHAR, -- FK -> parts.partID
+  "polygonID"       VARCHAR, -- FK -> polygons.polygonID
+  "siteID"          VARCHAR, -- FK -> sites.siteID
+  "datasetID"       VARCHAR, -- FK -> datasets.datasetID
+  "measureSetRepID" VARCHAR, -- FK -> measureSets.measureSetRepID
+  "aDateStart"      TIMESTAMP,
+  "aDateEnd"        TIMESTAMP,
+  "reportDate"      TIMESTAMP,
+  "compartment"     VARCHAR, -- FK -> parts.partID
+  "specimen"        VARCHAR, -- FK -> parts.partID
+  "fraction"        VARCHAR, -- FK -> parts.partID
+  "group"           VARCHAR, -- FK -> parts.partID
+  "class"           VARCHAR, -- FK -> parts.partID
+  "measure"         VARCHAR, -- FK -> parts.partID
+  "value"           VARCHAR,
+  "unit"            VARCHAR, -- FK -> parts.partID
+  "aggregation"     VARCHAR, -- FK -> parts.partID
+  "nomenclature"    VARCHAR, -- FK -> parts.partID
+  "index"           INTEGER,
+  "measureLic"      VARCHAR, -- FK -> parts.partID
+  "reportable"      VARCHAR, -- FK -> parts.partID
+  "organizationID"  VARCHAR, -- FK -> organizations.organizationID
+  "contactID"       VARCHAR, -- FK -> contacts.contactID
+  "refLink"         VARCHAR,
+  "lastEdited"      TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS "qualityReports" (
+  "qualityReportID"  INTEGER PRIMARY KEY,
+  "measureRepID"     VARCHAR, -- FK -> measures.measureRepID
+  "sampleID"         VARCHAR, -- FK -> samples.sampleID
+  "measureSetRepID"  VARCHAR, -- FK -> measureSets.measureSetRepID
+  "qualityFlag"      VARCHAR, -- FK -> parts.partID
+  "severity"         VARCHAR, -- FK -> parts.partID
+  "lastEdited"       TIMESTAMP,
+  "notes"            VARCHAR
+);
+
+CREATE TABLE IF NOT EXISTS "sampleRelationships" (
+  "sampleRelationshipsID" INTEGER PRIMARY KEY,
+  "sampleIDSubject"       VARCHAR, -- FK -> samples.sampleID
+  "relationshipID"        VARCHAR, -- FK -> parts.partID
+  "sampleIDObject"        VARCHAR, -- FK -> samples.sampleID
+  "lastEdited"            TIMESTAMP,
+  "notes"                 VARCHAR
+);
+
+CREATE TABLE IF NOT EXISTS "protocolRelationships" (
+  "protocolRelationshipsID" INTEGER PRIMARY KEY,
+  "protocolIDContainer"     VARCHAR, -- FK -> protocols.protocolID
+  "protocolIDObj"           VARCHAR, -- FK -> protocols.protocolID
+  "stepIDObj"               VARCHAR, -- FK -> protocolSteps.stepID
+  "relationshipID"          VARCHAR, -- FK -> parts.partID
+  "protocolIDSub"           VARCHAR, -- FK -> protocols.protocolID
+  "stepIDSub"               VARCHAR, -- FK -> protocolSteps.stepID
+  "lastEdited"              TIMESTAMP,
+  "notes"                   VARCHAR
+);
+
+CREATE TABLE IF NOT EXISTS "setParts" (
+  "setCompID"   VARCHAR PRIMARY KEY, -- ERD shows CK; using as PK here
+  "setID"       VARCHAR,             -- FK field but referenced table not present in ERD
+  "setType"     VARCHAR,             -- FK -> parts.partID
+  "partID"      VARCHAR,             -- FK -> parts.partID
+  "label"       VARCHAR,
+  "enumeration" INTEGER,
+  "status"      VARCHAR,
+  "firstReleased" VARCHAR,
+  "lastUpdated"   VARCHAR,
+  "changes"       VARCHAR,
+  "notes"         VARCHAR
+);
+
+-- ----------------------------------------------------------
+-- FOREIGN KEYS (only those shown/derivable in your ERD)
+-- ----------------------------------------------------------
+
+-- zones -> countries
+ALTER TABLE "zones"
+  ADD CONSTRAINT "zones_isoCode_fk" FOREIGN KEY ("isoCode")
+  REFERENCES "countries" ("isoCode")
+  ON UPDATE CASCADE ON DELETE SET NULL;
+
+-- parts (self FKs only; set* fields left free-text since 'sets' table not in ERD)
+ALTER TABLE "parts"
+  ADD CONSTRAINT "parts_partType_fk"      FOREIGN KEY ("partType")      REFERENCES "parts" ("partID") ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "parts_domain_fk"        FOREIGN KEY ("domain")        REFERENCES "parts" ("partID") ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "parts_group_fk"         FOREIGN KEY ("group")         REFERENCES "parts" ("partID") ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "parts_class_fk"         FOREIGN KEY ("class")         REFERENCES "parts" ("partID") ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "parts_nomen_fk"         FOREIGN KEY ("nomenclature")  REFERENCES "parts" ("partID") ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "parts_aggrScale_fk"     FOREIGN KEY ("aggregationScale") REFERENCES "parts" ("partID") ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "parts_status_fk"        FOREIGN KEY ("status")        REFERENCES "parts" ("partID") ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "parts_dataTypes_fk"     FOREIGN KEY ("dataTypes")     REFERENCES "parts" ("partID") ON UPDATE CASCADE ON DELETE SET NULL;
+
+-- translations
+ALTER TABLE "translations"
+  ADD CONSTRAINT "translations_lang_fk" FOREIGN KEY ("lang")   REFERENCES "languages" ("lang") ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "translations_part_fk" FOREIGN KEY ("partID") REFERENCES "parts"     ("partID") ON UPDATE CASCADE ON DELETE SET NULL;
+
+-- datasets
+ALTER TABLE "datasets"
+  ADD CONSTRAINT "datasets_parent_fk"    FOREIGN KEY ("parDatasetID") REFERENCES "datasets"     ("datasetID")      ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "datasets_license_fk"   FOREIGN KEY ("license")      REFERENCES "parts"        ("partID")         ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "datasets_lang_fk"      FOREIGN KEY ("lang")         REFERENCES "languages"    ("lang")           ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "datasets_funderCont_fk"  FOREIGN KEY ("funderCont")  REFERENCES "contacts"     ("contactID")      ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "datasets_custodyCont_fk" FOREIGN KEY ("custodyCont") REFERENCES "contacts"     ("contactID")      ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "datasets_funderID_fk"    FOREIGN KEY ("funderID")    REFERENCES "organizations"("organizationID") ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "datasets_custodyID_fk"   FOREIGN KEY ("custodyID")   REFERENCES "organizations"("organizationID") ON UPDATE CASCADE ON DELETE SET NULL;
+
+-- addresses
+ALTER TABLE "addresses"
+  ADD CONSTRAINT "addresses_dataset_fk"  FOREIGN KEY ("datasetID")    REFERENCES "datasets"  ("datasetID") ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "addresses_zone_fk"     FOREIGN KEY ("stateProvReg") REFERENCES "zones"     ("isoZone")   ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "addresses_country_fk"  FOREIGN KEY ("country")      REFERENCES "countries" ("isoCode")   ON UPDATE CASCADE ON DELETE SET NULL;
+
+-- organizations
+ALTER TABLE "organizations"
+  ADD CONSTRAINT "org_address_fk"  FOREIGN KEY ("addressID")  REFERENCES "addresses" ("addressID") ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "org_dataset_fk"  FOREIGN KEY ("datasetID")  REFERENCES "datasets"  ("datasetID") ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "org_type_fk"     FOREIGN KEY ("orgType")    REFERENCES "parts"     ("partID")    ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "org_level_fk"    FOREIGN KEY ("orgLevel")   REFERENCES "parts"     ("partID")    ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "org_sector_fk"   FOREIGN KEY ("orgSector")  REFERENCES "parts"     ("partID")    ON UPDATE CASCADE ON DELETE SET NULL;
+
+-- contacts
+ALTER TABLE "contacts"
+  ADD CONSTRAINT "contacts_dataset_fk"  FOREIGN KEY ("datasetID")      REFERENCES "datasets"     ("datasetID")     ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "contacts_org_fk"      FOREIGN KEY ("organizationID") REFERENCES "organizations"("organizationID") ON UPDATE CASCADE ON DELETE SET NULL;
+
+-- polygons
+ALTER TABLE "polygons"
+  ADD CONSTRAINT "polygons_dataset_fk"  FOREIGN KEY ("datasetID")      REFERENCES "datasets"     ("datasetID")     ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "polygons_org_fk"      FOREIGN KEY ("organizationID") REFERENCES "organizations"("organizationID") ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "polygons_contact_fk"  FOREIGN KEY ("contactID")      REFERENCES "contacts"     ("contactID")      ON UPDATE CASCADE ON DELETE SET NULL;
+
+-- instruments
+ALTER TABLE "instruments"
+  ADD CONSTRAINT "instruments_dataset_fk"  FOREIGN KEY ("datasetID")      REFERENCES "datasets"     ("datasetID")     ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "instruments_contact_fk"  FOREIGN KEY ("contactID")      REFERENCES "contacts"     ("contactID")      ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "instruments_org_fk"      FOREIGN KEY ("organizationID") REFERENCES "organizations"("organizationID") ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "instruments_type_fk"     FOREIGN KEY ("insType")        REFERENCES "parts"        ("partID")         ON UPDATE CASCADE ON DELETE SET NULL;
+
+-- protocols
+ALTER TABLE "protocols"
+  ADD CONSTRAINT "protocols_source_fk" FOREIGN KEY ("sourceProtocol") REFERENCES "protocols" ("protocolID") ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "protocols_dataset_fk" FOREIGN KEY ("datasetID")     REFERENCES "datasets"  ("datasetID")  ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "protocols_org_fk"     FOREIGN KEY ("organizationID") REFERENCES "organizations"("organizationID") ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "protocols_contact_fk" FOREIGN KEY ("contactID")      REFERENCES "contacts"     ("contactID")      ON UPDATE CASCADE ON DELETE SET NULL;
+
+-- protocolSteps
+ALTER TABLE "protocolSteps"
+  ADD CONSTRAINT "psteps_method_fk"   FOREIGN KEY ("method")       REFERENCES "parts"        ("partID")      ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "psteps_measure_fk"  FOREIGN KEY ("measure")      REFERENCES "parts"        ("partID")      ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "psteps_source_fk"   FOREIGN KEY ("sourceStep")   REFERENCES "protocolSteps"("stepID")      ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "psteps_org_fk"      FOREIGN KEY ("organizationID") REFERENCES "organizations"("organizationID") ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "psteps_contact_fk"  FOREIGN KEY ("contactID")    REFERENCES "contacts"     ("contactID")   ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "psteps_instr_fk"    FOREIGN KEY ("instrumentID") REFERENCES "instruments"  ("instrumentID") ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "psteps_unit_fk"     FOREIGN KEY ("unit")         REFERENCES "parts"        ("partID")      ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "psteps_agg_fk"      FOREIGN KEY ("aggregation")  REFERENCES "parts"        ("partID")      ON UPDATE CASCADE ON DELETE SET NULL;
+
+-- measureSets
+ALTER TABLE "measureSets"
+  ADD CONSTRAINT "msets_protocol_fk" FOREIGN KEY ("protocolID")      REFERENCES "protocols"    ("protocolID")     ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "msets_org_fk"      FOREIGN KEY ("organizationID")  REFERENCES "organizations"("organizationID") ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "msets_contact_fk"  FOREIGN KEY ("contactID")       REFERENCES "contacts"     ("contactID")      ON UPDATE CASCADE ON DELETE SET NULL;
+
+-- sites
+ALTER TABLE "sites"
+  ADD CONSTRAINT "sites_parent_fk"   FOREIGN KEY ("parSiteID")      REFERENCES "sites"        ("siteID")         ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "sites_dataset_fk"  FOREIGN KEY ("datasetID")      REFERENCES "datasets"     ("datasetID")      ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "sites_polygon_fk"  FOREIGN KEY ("polygonID")      REFERENCES "polygons"     ("polygonID")      ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "sites_type_fk"     FOREIGN KEY ("siteType")       REFERENCES "parts"        ("partID")         ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "sites_shed_fk"     FOREIGN KEY ("sampleShed")     REFERENCES "parts"        ("partID")         ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "sites_addr_fk"     FOREIGN KEY ("addressID")      REFERENCES "addresses"    ("addressID")      ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "sites_org_fk"      FOREIGN KEY ("organizationID") REFERENCES "organizations"("organizationID") ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "sites_contact_fk"  FOREIGN KEY ("contactID")      REFERENCES "contacts"     ("contactID")      ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "sites_rep1_fk"     FOREIGN KEY ("repOrg1")        REFERENCES "organizations"("organizationID") ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "sites_rep2_fk"     FOREIGN KEY ("repOrg2")        REFERENCES "organizations"("organizationID") ON UPDATE CASCADE ON DELETE SET NULL;
+
+-- samples
+ALTER TABLE "samples"
+  ADD CONSTRAINT "samples_protocol_fk"  FOREIGN KEY ("protocolID")     REFERENCES "protocols"    ("protocolID")     ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "samples_org_fk"       FOREIGN KEY ("organizationID") REFERENCES "organizations"("organizationID") ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "samples_contact_fk"   FOREIGN KEY ("contactID")      REFERENCES "contacts"     ("contactID")      ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "samples_site_fk"      FOREIGN KEY ("siteID")         REFERENCES "sites"        ("siteID")         ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "samples_purpose_fk"   FOREIGN KEY ("purposeID")      REFERENCES "parts"        ("partID")         ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "samples_material_fk"  FOREIGN KEY ("saMaterial")     REFERENCES "parts"        ("partID")         ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "samples_dataset_fk"   FOREIGN KEY ("datasetID")      REFERENCES "datasets"     ("datasetID")      ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "samples_origin_fk"    FOREIGN KEY ("origin")         REFERENCES "parts"        ("partID")         ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "samples_repType_fk"   FOREIGN KEY ("repType")        REFERENCES "parts"        ("partID")         ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "samples_collType_fk"  FOREIGN KEY ("collType")       REFERENCES "parts"        ("partID")         ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "samples_pooled_fk"    FOREIGN KEY ("pooled")         REFERENCES "parts"        ("partID")         ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "samples_reportable_fk" FOREIGN KEY ("reportable")    REFERENCES "parts"        ("partID")         ON UPDATE CASCADE ON DELETE SET NULL;
+
+-- measures
+ALTER TABLE "measures"
+  ADD CONSTRAINT "measures_protocol_fk"   FOREIGN KEY ("protocolID")      REFERENCES "protocols"    ("protocolID")     ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "measures_sample_fk"     FOREIGN KEY ("sampleID")        REFERENCES "samples"      ("sampleID")       ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "measures_purpose_fk"    FOREIGN KEY ("purposeID")       REFERENCES "parts"        ("partID")         ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "measures_polygon_fk"    FOREIGN KEY ("polygonID")       REFERENCES "polygons"     ("polygonID")      ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "measures_site_fk"       FOREIGN KEY ("siteID")          REFERENCES "sites"        ("siteID")         ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "measures_dataset_fk"    FOREIGN KEY ("datasetID")       REFERENCES "datasets"     ("datasetID")      ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "measures_set_fk"        FOREIGN KEY ("measureSetRepID") REFERENCES "measureSets"  ("measureSetRepID") ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "measures_comp_fk"       FOREIGN KEY ("compartment")     REFERENCES "parts"        ("partID")         ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "measures_specimen_fk"   FOREIGN KEY ("specimen")        REFERENCES "parts"        ("partID")         ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "measures_fraction_fk"   FOREIGN KEY ("fraction")        REFERENCES "parts"        ("partID")         ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "measures_group_fk"      FOREIGN KEY ("group")           REFERENCES "parts"        ("partID")         ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "measures_class_fk"      FOREIGN KEY ("class")           REFERENCES "parts"        ("partID")         ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "measures_measure_fk"    FOREIGN KEY ("measure")         REFERENCES "parts"        ("partID")         ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "measures_unit_fk"       FOREIGN KEY ("unit")            REFERENCES "parts"        ("partID")         ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "measures_agg_fk"        FOREIGN KEY ("aggregation")     REFERENCES "parts"        ("partID")         ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "measures_nomen_fk"      FOREIGN KEY ("nomenclature")    REFERENCES "parts"        ("partID")         ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "measures_lic_fk"        FOREIGN KEY ("measureLic")      REFERENCES "parts"        ("partID")         ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "measures_reportable_fk" FOREIGN KEY ("reportable")      REFERENCES "parts"        ("partID")         ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "measures_org_fk"        FOREIGN KEY ("organizationID")  REFERENCES "organizations"("organizationID") ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "measures_contact_fk"    FOREIGN KEY ("contactID")       REFERENCES "contacts"     ("contactID")      ON UPDATE CASCADE ON DELETE SET NULL;
+
+-- qualityReports
+ALTER TABLE "qualityReports"
+  ADD CONSTRAINT "qrep_measure_fk"   FOREIGN KEY ("measureRepID")    REFERENCES "measures"   ("measureRepID")    ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "qrep_sample_fk"    FOREIGN KEY ("sampleID")        REFERENCES "samples"    ("sampleID")        ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "qrep_mset_fk"      FOREIGN KEY ("measureSetRepID") REFERENCES "measureSets"("measureSetRepID") ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "qrep_flag_fk"      FOREIGN KEY ("qualityFlag")     REFERENCES "parts"      ("partID")          ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "qrep_severity_fk"  FOREIGN KEY ("severity")        REFERENCES "parts"      ("partID")          ON UPDATE CASCADE ON DELETE SET NULL;
+
+-- sampleRelationships
+ALTER TABLE "sampleRelationships"
+  ADD CONSTRAINT "srel_subject_fk" FOREIGN KEY ("sampleIDSubject") REFERENCES "samples" ("sampleID") ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "srel_rel_fk"     FOREIGN KEY ("relationshipID")  REFERENCES "parts"   ("partID")   ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "srel_object_fk"  FOREIGN KEY ("sampleIDObject")  REFERENCES "samples" ("sampleID") ON UPDATE CASCADE ON DELETE SET NULL;
+
+-- protocolRelationships
+ALTER TABLE "protocolRelationships"
+  ADD CONSTRAINT "prel_container_fk" FOREIGN KEY ("protocolIDContainer") REFERENCES "protocols"     ("protocolID") ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "prel_objprot_fk"   FOREIGN KEY ("protocolIDObj")       REFERENCES "protocols"     ("protocolID") ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "prel_objstep_fk"   FOREIGN KEY ("stepIDObj")           REFERENCES "protocolSteps" ("stepID")     ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "prel_rel_fk"       FOREIGN KEY ("relationshipID")      REFERENCES "parts"         ("partID")     ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "prel_subprot_fk"   FOREIGN KEY ("protocolIDSub")       REFERENCES "protocols"     ("protocolID") ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "prel_substep_fk"   FOREIGN KEY ("stepIDSub")           REFERENCES "protocolSteps" ("stepID")     ON UPDATE CASCADE ON DELETE SET NULL;
+
+-- setParts (no FK on setID because ERD lacks a 'sets' table)
+ALTER TABLE "setParts"
+  ADD CONSTRAINT "setparts_type_fk" FOREIGN KEY ("setType") REFERENCES "parts" ("partID") ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "setparts_part_fk" FOREIGN KEY ("partID")  REFERENCES "parts" ("partID") ON UPDATE CASCADE ON DELETE SET NULL;
+
+-- wideNames (all inputs to parts)
+ALTER TABLE "wideNames"
+  ADD CONSTRAINT "wname_type_fk"      FOREIGN KEY ("wideNameType")     REFERENCES "parts" ("partID") ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "wname_rtinput_fk"   FOREIGN KEY ("reportTableInput") REFERENCES "parts" ("partID") ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "wname_ptinput_fk"   FOREIGN KEY ("partTypeInput")    REFERENCES "parts" ("partID") ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "wname_comp_in_fk"   FOREIGN KEY ("compartmentInput") REFERENCES "parts" ("partID") ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "wname_spec_in_fk"   FOREIGN KEY ("specimenInput")    REFERENCES "parts" ("partID") ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "wname_frac_in_fk"   FOREIGN KEY ("fractionInput")    REFERENCES "parts" ("partID") ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "wname_meas_in_fk"   FOREIGN KEY ("measureInput")     REFERENCES "parts" ("partID") ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "wname_meth_in_fk"   FOREIGN KEY ("methodInput")      REFERENCES "parts" ("partID") ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "wname_unit_in_fk"   FOREIGN KEY ("unitInput")        REFERENCES "parts" ("partID") ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "wname_agg_in_fk"    FOREIGN KEY ("aggregationInput") REFERENCES "parts" ("partID") ON UPDATE CASCADE ON DELETE SET NULL,
+  ADD CONSTRAINT "wname_attr_in_fk"   FOREIGN KEY ("attributeInput")   REFERENCES "parts" ("partID") ON UPDATE CASCADE ON DELETE SET NULL;
